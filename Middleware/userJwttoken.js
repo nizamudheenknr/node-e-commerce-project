@@ -11,7 +11,7 @@ export const usertoken = (req,res,next)=>{
             res.status(403).json({message:"token is not provide"})
         }
 
-        jwt.verify(token,process.env.USER_JWT_SECRET_CODE,(err,decode)=>{
+        jwt.verify(token,process.env.USER_JWT_SECRET_CODE,(err,decode)=>{ 
             if(err){
                 res.status(201).json({message:"unauthorized"})
             }

@@ -40,7 +40,8 @@ export const signup = async (req,res,next)=>{
         const newUser = new User({
             username,
             email,
-            password:hashedpassword
+            password:hashedpassword,
+            profileImg: req.cloudinaryImageUrl
         })
 
         // saving the new user
@@ -88,7 +89,7 @@ export const login = async (req,res,next)=>{
 
         // JWT setting
           
-        const token = jwt.sign({id:validUser._id},process.env.USER_JWT_SECRET_KEY)
+        const token = jwt.sign({id:validUser._id},process.env.USER_JWT_SECRET_CODE)
          const {password:hashedpassword,...rest} = validUser._doc;
 
         //  setting cookie
