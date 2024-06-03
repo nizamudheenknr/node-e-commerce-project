@@ -29,6 +29,9 @@ export const createProduct = async (req, res, next) => {
   }
 };
 
+
+
+
 // VIEW ALL PRODUCTS
 
 // export const viewAllProduct= async(req,res,next)=>{

@@ -5,7 +5,7 @@ dotenv.config()
 
 export const usertoken = (req,res,next)=>{
     try{
-        const token = req.header["authorization"]
+        const token = req.headers["authorization"]
 
         if (!token){
             res.status(403).json({message:"token is not provide"})

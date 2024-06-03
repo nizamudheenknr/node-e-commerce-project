@@ -57,7 +57,9 @@ export const signup = async (req,res,next)=>{
         res.status(422).json({message:"error occured in validation",Details:error})
 
         next(error);
+        
     }
+   
 };
 
 // USER LOGIN
