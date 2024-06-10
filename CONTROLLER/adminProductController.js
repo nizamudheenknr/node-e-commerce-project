@@ -5,14 +5,19 @@ import Product from "../MODELS/productSchema.js";
 
 export const createProduct = async (req, res, next) => {
   try {
+
+    // validating product
     const {value,error} = productJoi.validate(req.body);
     // const  value  = req.body;
     // const {title,description,price,category} = req.body;
+    // Error handling
     if (error) {
       res.status(404).json({ error: error });
     }
     // console.log(value.title);
 
+    //  creating a new product
+    
     const newProduct = new Product({
       title: value.title,
       description: value.description,
@@ -26,7 +31,7 @@ export const createProduct = async (req, res, next) => {
     res.status(200).json({ message: "product added successfully" });
   } catch (error) {
     return next(error);
-  }
+  } 
 };
 
 

@@ -8,7 +8,7 @@ export const usertoken = (req,res,next)=>{
         const token = req.headers["authorization"]
 
         if (!token){
-            res.status(403).json({message:"token is not provide"})
+            res.status(403).json({message:"token is not provid"})
         }
 
         jwt.verify(token,process.env.USER_JWT_SECRET_CODE,(err,decode)=>{ 

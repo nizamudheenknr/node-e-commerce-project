@@ -22,13 +22,13 @@ export const viewAllProduct = async (req,res,next)=>{
 
 export const viewSpecificProduct = async(req,res,next)=>{
     try{
-        const id = req.params.id
+        const productid = req.params.id
 
-        if(!id){
+        if(!productid){
             res.status(400).json({message:"ID not found"})
         }
 
-        const product = await Product.findById(id)
+        const product = await Product.findById(productid)
 
         if(!product){
            res.status(404).json({message:"Product not found"})

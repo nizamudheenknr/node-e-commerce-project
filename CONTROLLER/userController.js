@@ -97,7 +97,7 @@ export const login = async (req,res,next)=>{
         //  setting cookie
           
          res.cookie('token_access',token,{httpOnly:true})
-         res.status(400).json({message:"Login succussfully",token,data:rest})
+         res.status(200).json({message:"Login succussfully",token,data:rest})
     }catch(error){
         next(error)
     }
