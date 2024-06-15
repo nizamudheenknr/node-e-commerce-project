@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 
+
 const userSchema = new mongoose.Schema({
     username:{
         type:String,
@@ -27,7 +28,15 @@ const userSchema = new mongoose.Schema({
     isDeleted:{
         type:Boolean,
         default:false,
-    }
+    },
+    cart:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"cart"
+    }],
+    wishList:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"wishList"
+    }]
     
 })
 const User = mongoose.model("User",userSchema)

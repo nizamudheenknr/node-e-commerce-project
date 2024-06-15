@@ -1,5 +1,5 @@
 import express from "express"
-import { createProduct,} from "../CONTROLLER/adminProductController.js";
+import { createProduct, specificProduct, viewAllProduct,} from "../CONTROLLER/adminProductController.js";
 import uploadImage from "../Middleware/uploadImage.js";
 
 const route = express.Router();
@@ -11,8 +11,8 @@ const route = express.Router();
 
 
 route.post('/addproduct',uploadImage,createProduct);
-// route.get('/viewproducts',viewAllProduct)
-// route.get('/viewproducts/:id',specificProduct)
+route.get('/viewproducts',viewAllProduct)
+route.get('/viewproducts/:id',specificProduct)
 
 
 export default route

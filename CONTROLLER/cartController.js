@@ -48,8 +48,8 @@ export const viewcart = async (req,res,next)=>{
     try{
         const id = req.params.userid;
         const user = await User.findById(id).populate({
-            path:"cart",
-            populate:{path:"productId"}
+            path:'cart',
+            populate:{path:'productId'}
         })
         if(!user){
             res.status(404).json({message:"User not found"})
@@ -70,19 +70,19 @@ export const removecart= async (req,res,next)=>{
         const userid=req.params.userid
         const productid=req.params.productid
 
-        const user = await User.findById(userId)
+        const user = await User.findById(userid)
         if(!user){
-            res.status(404).json({message:"User not found"})
+           return res.status(404).json({message:"User not found"})
         }
 
-        const product = await product.findById(productid)
+        const product = await Product.findById(productid)
         if(!product){
-            res.status(404).json({message:"Product not found"})
+           return res.status(404).json({message:"Product not found"})
         }
 
         const cartItem = await cart.findOneAndDelete({userId: user._id, productId: product._id})
         if(!cartItem){
-            res.status(404).json({message:"product not found in the cart"})
+          return  res.status(404).json({message:"product not found in the cart"})
         }
 
         const cartItemIndex = await user.cart.findIndex(item => item.equals(cartItem._id))
@@ -101,7 +101,7 @@ export const removecart= async (req,res,next)=>{
 export const incrementItemQuantity=async(req,res,next)=>{
     try{
         const userid=req.params.userid;
-        const productid= req.params.userid;
+        const productid= req.params.productid;
         const {ItemQuantity} = req.body
 
         const user =await User.findById(userid)
@@ -112,7 +112,7 @@ export const incrementItemQuantity=async(req,res,next)=>{
         if(!product){
             res.status(404).json({message:"Product not found"})
         }
-        const Item = await cart.findOne({userId:user_id,productId:product._id})
+        const Item = await cart.findOne({userId:userid,productId:productid})
         if(Item){
             Item.quantity += ItemQuantity
             await Item.save()
@@ -127,8 +127,27 @@ export const incrementItemQuantity=async(req,res,next)=>{
 
 // quantity decrement in the cart
 
-// export const decrementItemQuantity = async(req,res,next)=>{
-//     try{
+export const decrementItemQuantity = async(req,res,next)=>{
+    try{
+        const userid=req.params.userid;
+        const productid=req.params.productid;
+        const{ItemQuantity} = req.body
 
-//     }
-// }
+        const user = await User.findById(userid)
+        if(!user){
+          return res.status(404).json({message:"product not found"})
+        
+        }
+        const Item= await cart.findOne({userId:user._id,productId:product._id})
+        if(Item){
+            Item.quantity -= ItemQuantity;
+            await Item.save()
+            return res.status(200).json({message:"Quantity decremented"})
+        }else{
+            return res.status(404).json({message:"product not found in the cart"})
+        }
+
+    }catch(error){
+        return next(error)
+    }
+}
