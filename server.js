@@ -18,7 +18,7 @@ app.use(express.json());
 
 app.use("/api/users", authenticationroute);
 app.use("/api/admin", adminRoute);
-app.use("/api/users",productsRoute)
+app.use("/api/userproduct",productsRoute)
 const PORT = process.env.PORT || 6788;
 
 

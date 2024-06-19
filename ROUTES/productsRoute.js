@@ -8,7 +8,6 @@ const route = express.Router()
 route.get('/products',viewAllProduct)
 route.get('/viewProducts/:id',viewSpecificProduct)
 route.get('/categoryProduct/:category',productCategory)
-route.post('/productRemove')
 
 // cart routes
 
