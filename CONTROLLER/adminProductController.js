@@ -80,16 +80,63 @@ export const viewCategory = async(req,res,next)=>{
   try{
     const name = req.params.category
 
-    const product = await Product.find({ $or:[
+    const products = await Product.find({ $or:[
       {title:{$regex:new RegExp(name,"i")}},
       {category:{$regex:new RegExp(name,"i")}}
     ]
 
     })
-    if(product.length ==0){
+    if(products.length ==0){
       res.status(404).json({message:"product not found"})
     }
-     res.status(200).json({message:"Categories fetched succussfully"})
+     res.status(200).json({message:"Categories fetched succussfully",products:products})
+
+  }catch(error){
+    return next(error)
+  }
+}
+
+// update product
+
+export const productupdate = async(req,res,next)=>{
+  try{
+    const id = req.params.id;
+    const product = await Product.findById(id)
+    if(!product){
+      return res.status(404).json({message:"Product not found"})
+    }
+    const {title,description,price,category}=req.body
+
+    if(title){
+      product.title=title
+    };
+    if(description){
+      product.description=description
+    };
+    if(price){
+      product.price=price
+    };
+    if(req.cloudinaryImageUrl){
+      product.productImage = req.cloudinaryImageUrl
+    }
+    if(category){
+      product.category=category
+    }
+
+    await product.save()
+    return res.status(200).json({message:"updated successfully"})
+  }catch (error){
+    return next(error)
+  }
+}
+
+// delete product
+
+export const removeProduct = async (req,res,next)=>{
+  try{
+    const id = req.params.id
+    await Product.findByIdAndDelete(id)
+     return res.status(200).json({message:"product deleted succussfully"})
 
   }catch(error){
     return next(error)

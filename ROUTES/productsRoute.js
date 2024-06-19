@@ -5,7 +5,7 @@ import { addwishList, removeWishlist, viewWishList } from '../CONTROLLER/wishlis
 
 const route = express.Router()
 
-route.get('/products',viewAllProduct)
+route.get('/allproducts',viewAllProduct)
 route.get('/viewProducts/:id',viewSpecificProduct)
 route.get('/categoryProduct/:category',productCategory)
 
