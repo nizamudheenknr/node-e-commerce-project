@@ -1,0 +1,150 @@
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: #f0f2f5;">
+    <button id="rzp-button1" style="
+        background: linear-gradient(135deg, #6e8efb, #a777e3);
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 15px 30px;
+        border: 2px solid transparent;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        position: relative;
+        overflow: hidden;
+        animation: pulse 2s infinite, colorchange 10s infinite linear, rotatebg 5s infinite linear, shimmer 3s infinite;
+    "
+    onmouseover="this.style.transform='scale(1.1) rotate(2deg)'; this.style.boxShadow='0 12px 24px rgba(0, 0, 0, 0.3)'; this.style.border='2px solid #ffffff'; this.style.animation='bounce 0.6s';"
+    onmouseout="this.style.transform='scale(1) rotate(0deg)'; this.style.boxShadow='0 8px 16px rgba(0, 0, 0, 0.2)'; this.style.border='2px solid transparent'; this.style.animation='none';"
+    onmousedown="createRipple(event); this.style.transform='scale(0.95)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.1)';"
+    onmouseup="this.style.transform='scale(1.1) rotate(2deg)'; this.style.boxShadow='0 12px 24px rgba(0, 0, 0, 0.3)';">
+        Pay with Razorpay
+    </button>
+</div>
+
+<style>
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+        }
+        70% {
+            box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+        }
+    }
+
+    @keyframes colorchange {
+        0% {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+        }
+        25% {
+            background: linear-gradient(135deg, #fcb045, #fd1d1d);
+        }
+        50% {
+            background: linear-gradient(135deg, #00c6ff, #0072ff);
+        }
+        75% {
+            background: linear-gradient(135deg, #ff6a00, #ee0979);
+        }
+        100% {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+        }
+    }
+
+    @keyframes rotatebg {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    @keyframes shimmer {
+        0% {
+            background-position: -200% 0;
+        }
+        100% {
+            background-position: 200% 0;
+        }
+    }
+
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    .ripple {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.6);
+        transform: scale(0);
+        animation: ripple 0.6s linear;
+    }
+
+    @keyframes ripple {
+        to {
+            transform: scale(4);
+            opacity: 0;
+        }
+    }
+</style>
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+var options = {
+    "key": "rzp_test_8AFz4QlvG0Diby", // Enter the Key ID generated from the Dashboard
+    "amount": "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "Acme Corp",
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id": "order_OQYePL9wwpqBlq", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "handler": function (response){
+        alert(response.razorpay_payment_id);
+        alert(response.razorpay_order_id);
+        alert(response.razorpay_signature)
+        console.log(razorpay_payment_id);
+        console.log(razorpay_order_id);
+        console.log(razorpay_signature);
+    },
+
+
+    "prefill": {
+        "name": "nizam",
+        "email": "nizam@gmail.com",
+        "contact": "9048160716"
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options);
+rzp1.on('payment.failed', function (response){
+        alert(response.error.code);
+        alert(response.error.description);
+        alert(response.error.source);
+        alert(response.error.step);
+        alert(response.error.reason);
+        alert(response.error.metadata.order_id);
+        alert(response.error.metadata.payment_id);
+});
+document.getElementById('rzp-button1').onclick = function(e){
+    rzp1.open();
+    e.preventDefault();
+}
+</script> 

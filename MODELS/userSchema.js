@@ -36,7 +36,13 @@ const userSchema = new mongoose.Schema({
     wishList:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"wishList"
+    }],
+    Order:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Order"
     }]
+
+
     
 })
 const User = mongoose.model("User",userSchema)

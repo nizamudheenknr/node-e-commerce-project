@@ -18,9 +18,8 @@ export const addCart = async(req,res,next)=>{
         if(!product){
            return res.status(404).json({message:"product not found"})
         }
-        if (!user.cart) {
-            user.cart = [];
-        }
+
+        
        let cartItem = await cart.findOne({ userId:user.id,productId:product._id})
        if(cartItem){
         return res.status(200).json({message:"product already added inthe cart"})
@@ -52,10 +51,10 @@ export const viewcart = async (req,res,next)=>{
             populate:{path:'productId'}
         })
         if(!user){
-            res.status(404).json({message:"User not found"})
+            return res.status(404).json({message:"User not found"})
         }
         if(!user.cart || user.cart.length === 0){
-            res.status(200).json({message:"Cart is empty"})
+            return res.status(200).json({message:"Cart is empty"})
         }
         res.status(200).json(user.cart)
     }catch(error){
@@ -135,10 +134,15 @@ export const decrementItemQuantity = async(req,res,next)=>{
 
         const user = await User.findById(userid)
         if(!user){
-          return res.status(404).json({message:"product not found"})
+          return res.status(404).json({message:"user not found"})
         
         }
-        const Item= await cart.findOne({userId:user._id,productId:product._id})
+        const product = await Product.findById(productid)
+
+        if(!product){
+            return res.status(404).json({message:"product not found"})
+        }
+        const Item= await cart.findOne({userId:user._id, productId:product._id})
         if(Item){
             Item.quantity -= ItemQuantity;
             await Item.save()

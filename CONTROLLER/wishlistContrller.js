@@ -1,4 +1,4 @@
-
+import mongoose from "mongoose"
 import Product from "../MODELS/productSchema.js"
 import User from "../MODELS/userSchema.js"
 import wishList from "../MODELS/wishListSchema.js"
@@ -7,8 +7,8 @@ import wishList from "../MODELS/wishListSchema.js"
 
 export const addwishList = async(req,res,next)=>{
     try{
-        const userId=req.params.userId
-        const productId=req.params.productId
+        const userId=req.params.userid
+        const productId=req.params.productid
 
         // finding user 
 
@@ -19,15 +19,16 @@ export const addwishList = async(req,res,next)=>{
 
         // find product
 
-        const product = await User.findById(productId)
+        const product = await Product.findById(productId)
         if(!product){
             return res.status(404).json({message:"product not found"})
         }
 
+        // checking if the product is already in the wishlist
 
         let wishlistItem = await wishList.findOne({userId:user._id,productId:product._id})
         if(wishlistItem){
-            return res.status(400).json({message:"product not found"})
+            return res.status(400).json({message:"product is already in wishlist"})
         }else{
             wishlistItem = await wishList.create({
                 userId:user._id,
@@ -79,7 +80,7 @@ export const viewWishList = async (req,res,next)=>{
 
 export const removeWishlist = async (req,res,next)=>{
     try{
-        const userid = req.pa1rams.userid
+        const userid = req.params.userid
         const productid = req.params.productid
 
         const user =await User.findById(userid);
@@ -96,7 +97,7 @@ export const removeWishlist = async (req,res,next)=>{
             return res.status(404).json({message:"product not found in the wishlist"})
         }
 
-        const wishlistItemIndex = await user.wishlist.findIndex(item=>item.equals(updateWishList._id))
+        const wishlistItemIndex = await user.wishList.findIndex(item=>item.equals(updateWishList._id))
 
         if(wishlistItemIndex !== -1){
             user.wishList.splice(wishlistItemIndex,1)

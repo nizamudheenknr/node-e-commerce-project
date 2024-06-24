@@ -21,3 +21,81 @@ export const adminLogin =  async (req,res,next)=>{
         return next(error)
     }
 }
+// view all users data
+
+export const viewallusers = async (req,res,next)=>{
+    try{
+        const user = await User.find()
+
+        if(!user || user.length==0){
+            return res.status(404).json({message:"user's not found"})
+        }
+        return res.status(200).json({message:"user's data fetched succussfully",data:user})
+    }catch(error){
+        return next(error)
+    }
+}
+
+// view specific users data
+
+export const viewspecificusers = async (req,res,next)=>{
+    try{
+        const id = req.params.id
+
+        const user = await User.findById(id)
+
+        if(!user){
+            return res.status(404).json({message:"user not found"})
+        }
+        return res.status(200).json({message:"user fetched succussfully",data:user})
+
+
+    }catch(error){
+        return next(error)
+    }
+}
+
+// view a user data by name
+
+export const viewuserbyname = async (req,res,next)=>{
+    try{
+        const name = req.params.name
+
+        const user = await User.find({
+            username:{$regex:new RegExp(name,"i")}
+        })
+        if(user.length==0){
+            return res.status(404).json({message:"User not found"})
+        }
+        return res.status(200).json({message:"User fetched succussfully",data:user})
+        }catch(error){
+            return next(error)
+        }
+    }
+
+    // user block and unblock
+
+    export const userblockandunblock = async(req,res,next)=>{
+        try{
+            const id = req.params.id
+            
+            const user = await User.findById(id)
+
+            if(!user){
+                return res.status(404).json({message:"user not found"})
+            }
+
+            if(user.isDeleted == false){    
+                (user.isDeleted = true)
+                await user.save()   
+                return res.status(200).json({message:"Blocked!"})
+            }else{
+                (user.isDeleted = false)
+                await user.save()
+                return res.status(200).json({message:"Unblocked"})
+            }
+
+        }catch(error){
+            return next(error)
+        }
+    }

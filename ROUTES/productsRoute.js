@@ -2,6 +2,7 @@ import express from 'express'
 import { productCategory, viewAllProduct, viewSpecificProduct } from '../CONTROLLER/userProductController.js'
 import { addCart, decrementItemQuantity, incrementItemQuantity,removecart,viewcart } from '../CONTROLLER/cartController.js'
 import { addwishList, removeWishlist, viewWishList } from '../CONTROLLER/wishlistContrller.js'
+import { payment, verifyPayment } from '../CONTROLLER/userPaymentController.js'
 
 const route = express.Router()
 
@@ -22,4 +23,8 @@ route.post('/:userid/cart/:productid/decrement',decrementItemQuantity)
 route.post('/:userid/wishlist/:productid',addwishList)
 route.get('/wishlist/:userid',viewWishList)
 route.delete('/:userid/wishlist/:productid/remove',removeWishlist)
+
+// payment
+route.post('/:userid/payment',payment)
+// route.post('/:verifypayment',verifyPayment)
 export default route

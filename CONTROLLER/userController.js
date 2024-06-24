@@ -73,20 +73,20 @@ export const login = async (req,res,next)=>{
         const validUser = await User.findOne({email})
 
         if(!validUser){
-            res.status(404).json({message:"User not found"})
+          return res.status(404).json({message:"User not found"})
         }
         
         // Check if the account is suspended
 
         if(validUser.isDeleted == true){
-            res.status(400).json({ message:"Your account is suspended"})
+           return res.status(400).json({ message:"Your account is suspended"})
         }
 
         // compare the enter password with hashed password
 
         const isValid = bcrypt.compareSync(password,validUser.password)
         if(!isValid){
-           res.status(401).json({message:"Entered password is incorrect"})
+          return res.status(401).json({message:"Entered password is incorrect"})
         }
 
         // JWT setting
