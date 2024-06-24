@@ -26,5 +26,5 @@ route.delete('/:userid/wishlist/:productid/remove',removeWishlist)
 
 // payment
 route.post('/:userid/payment',payment)
-// route.post('/:verifypayment',verifyPayment)
+route.post('/:verifypayment',verifyPayment)
 export default route
