@@ -1,4 +1,5 @@
 
+
 import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
@@ -7,11 +8,20 @@ const orderSchema = new mongoose.Schema({
         ref:"User",
         required:true
     },
-    ProductId:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Product',
-        required:true
-    }],
+    products: [
+        {
+            productId: { 
+                type: mongoose.Schema.Types.ObjectId,
+                 ref: 'Product', 
+                 required: true },
+           
+        
+           quantity: {
+            type:Number,
+            required:true
+        }
+        
+}],
     purchaseDate:{
         type:Date,
         required:true,
@@ -32,6 +42,10 @@ const orderSchema = new mongoose.Schema({
     },
     paymentId:{
         type:String,
+        required:true
+    },
+    totalItem:{
+        type:Number,
         required:true
     }
     

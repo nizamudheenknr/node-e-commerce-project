@@ -3,6 +3,7 @@ import { createProduct, productupdate, removeProduct, specificProduct, viewAllPr
 import uploadImage from "../Middleware/uploadImage.js";
 import { adminLogin, userblockandunblock, viewallusers, viewspecificusers, viewuserbyname } from "../CONTROLLER/adminUserController.js";
 import { admintoken } from "../Middleware/adminJwtToken.js";
+import { adminOrders, revenue } from "../CONTROLLER/adminOrderController.js";
 
 const route = express.Router();
 
@@ -29,5 +30,9 @@ route.get('/usersdata',viewallusers)
 route.get('/specificuserdata/:id',viewspecificusers)
 route.get('/viewuserbyname/:name',viewuserbyname)
 route.patch('/user/Block&unblock/:id',userblockandunblock)
+
+// admin order controller
+route.get('/orders',adminOrders)
+route.get('/revenue',revenue)
 
 export default route

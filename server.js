@@ -12,7 +12,7 @@ const app = express();
 
 mongoose
   .connect(process.env.DB)
-  .then(() => console.log("db connected"))
+  .then(() => console.log("db connected "))
   .catch((err) => console.log(err));
 
 app.use(express.json());

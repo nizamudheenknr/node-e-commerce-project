@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken"
 import User from "../MODELS/userSchema.js"
 import dotenv from "dotenv"
 
+dotenv.config();
 // admin login
 
 export const adminLogin =  async (req,res,next)=>{

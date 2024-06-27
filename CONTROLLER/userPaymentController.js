@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import User from '../MODELS/userSchema.js'
 import crypto from 'crypto'
 import Orders from "../MODELS/orderSchema.js";
-import { log } from "console";
+
 
 dotenv.config();
 
@@ -86,15 +86,21 @@ export const verifyPayment = async(req,res) =>{
             return res.status(404).json({status:"failure",message:"Invalid signature"})
          }
          const Order = await razorpay.orders.fetch(razorpay_order_id);
+         if (!Order || !Order.notes || !Order.notes.userid) {
+            return res.status(400).json({ status: "failure", message: "Order or user ID not found" });
+        }
 
          const user = await User.findById(Order.notes.userid).populate({path:"cart",populate:{path:"productId"}})
-          
+         if (!user) {
+            return res.status(400).json({ status: "failure", message: "User not found" });
+        }
          const orderItems = user.cart.map((item)=>({
             productId:item.productId._id,
             quantity:item.quantity,
             price:item.productId.price
-
+            
          }))
+         console.log(orderItems)
 
          const totalamount = orderItems.reduce((sum,item) => sum+(item.quantity*item.price),0)
 
@@ -113,7 +119,7 @@ export const verifyPayment = async(req,res) =>{
         })
 
         user.Order.push(order)
-        await order.save()
+        await user.save()
 
         
          

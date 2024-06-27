@@ -110,14 +110,32 @@ var options = {
     "name": "Acme Corp",
     "description": "Test Transaction",
     "image": "https://example.com/your_logo",
-    "order_id": "order_OQYePL9wwpqBlq", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-    "handler": function (response){
+    "order_id": "order_ORLMgRHL4VMudG", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "handler": function (response){ 
         alert(response.razorpay_payment_id);
         alert(response.razorpay_order_id);
         alert(response.razorpay_signature)
-        console.log(razorpay_payment_id);
-        console.log(razorpay_order_id);
-        console.log(razorpay_signature);
+        console.log(response.razorpay_payment_id);
+        console.log(response.razorpay_order_id);
+        console.log(response.razorpay_signature);
+
+        // Send the details to the server for verification and order completion
+
+        fetch('/your-verification-endpoint',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+                razorpay_payment_id:response.razorpay_payment_id,
+                razorpay_order_id:response.razorpay_order_id,
+                razorpay_signature:response.razorpay_signature,
+                userid:'userId'
+            })
+        }).then(res => res.json())
+        .then(data => console.log(data))
+        .catch(error => console.log(error))
+
     },
 
 
